@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use http\Env\Request;
 use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request) {
+    public function register(RegisterRequest $request) {
         if ($request->role == 'seller') {
             User::create([
                 'user_name' => $request->name,

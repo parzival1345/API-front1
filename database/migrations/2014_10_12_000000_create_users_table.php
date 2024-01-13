@@ -13,12 +13,23 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('user_name');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->integer('age')->nullable();
+            $table->enum('gender',['male','female','other','do_not_want_to_say'])->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->bigInteger('phone_number')->nullable();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('address')->nullable();
+            $table->integer('post_code')->nullable();
+            $table->string('country')->nullable();
+            $table->string('province')->nullable();
+            $table->string('city')->nullable();
+            $table->enum('role',['admin' , 'customer' , 'seller'])->nullable();
+            $table->enum('status',['رد شده','در انتظار تایید','تایید شده'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

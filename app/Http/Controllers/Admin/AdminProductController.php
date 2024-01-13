@@ -9,6 +9,9 @@ use Symfony\Component\Process\Process;
 
 class AdminProductController extends Controller
 {
+    public function filter(Request $request) {
+
+    }
     public function index() {
         $products = Product::all();
         return response()->json(['products' => $products]);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Abbasudo\Purity\Tests\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,35 +14,40 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class AdminUserController extends Controller
 {
-    public function filter() {
-        $users = QueryBuilder::for(User::class)
-            ->allowedFilters([
-                AllowedFilter::callback('AgeMin', function($query, $value){
-                    $query->where('age', '>=', (int)$value);
-                })->ignore(null),
-                AllowedFilter::callback('AgeMax', function($query, $value){
-                    $query->where('age', '<=', (int)$value);
-                })->ignore(null),
-                AllowedFilter::exact('email')->ignore(null),
-                AllowedFilter::exact('user_name')->ignore(null),
-                AllowedFilter::exact('first_name')->ignore(null),
-                AllowedFilter::exact('last_name')->ignore(null),
-                AllowedFilter::exact('gender')->ignore(null),
-                AllowedFilter::exact('phone_number')->ignore(null),
-                AllowedFilter::exact('post_code')->ignore(null),
-            ])
-            ->get();
-        return response()->json($users);
+    public function filter(Request $request)
+    {
+        $filter = User::query();
+        $email = $request->input('email');
+        $user_name = $request->input('user_name');
+        $phone_number = $request->input('phone_number');
+        if ($email) {
+            $filter->where('email', $email);
+        }
+        if ($user_name) {
+            $filter->where('user_name' , $user_name);
+        }
+        if ($phone_number) {
+            $filter->where('phone_number' , $phone_number);
+        }
 
+
+        $filteredUsers = $filter->get();
+        return response()->json([
+            'filteredUsers' => $filteredUsers,
+        ]);
     }
-    public function index() {
+
+    public function index()
+    {
         $users = User::all();
         return response()->json([
             'users' => $users,
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+//        dd($request->all());
         try {
             User::create([
                 'role' => $request->role,
@@ -63,7 +69,7 @@ class AdminUserController extends Controller
                 'status' => true,
                 'message' => 'information is correct',
             ]);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage()
@@ -71,9 +77,10 @@ class AdminUserController extends Controller
         }
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         try {
-            $user =  User::find($id)
+            $user = User::find($id)
                 ->updateOrFail([
                     'user_name' => $request->user_name,
                     'first_name' => $request->first_name,
@@ -89,7 +96,7 @@ class AdminUserController extends Controller
                     'city' => $request->city,
                 ]);
             return response()->json(['user' => $user]);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             return \response()->json([
                 'status' => false,
                 'message' => "{$e->getMessage()}"
@@ -97,7 +104,8 @@ class AdminUserController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $user = User::findOrFail($id);
 
