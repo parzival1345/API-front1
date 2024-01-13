@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-    public function register(RegisterRequest $request) {
+    public function register(RegisterRequest $request)
+    {
         if ($request->role == 'seller') {
             User::create([
                 'user_name' => $request->name,
@@ -18,8 +19,11 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
                 'status' => 'در انتظار تایید',
             ]);
-            return view('authorize/register')->with('message' , 'لطفا منتظر تایید ادمین باشید');
-        }else {
+            return response()->json([
+                'status' => true,
+                'message' => 'please wait for accepting admin'
+            ]);
+        } else {
             try {
                 User::create([
                     'user_name' => $request->name,
@@ -28,8 +32,10 @@ class RegisterController extends Controller
                     'password' => Hash::make($request->password)
                 ]);
 
-                return redirect('/login');
-
+                return response()->json([
+                    'status' => true,
+                    'message'=> 'your account has been register'
+                ]);
             } catch (\Throwable $th) {
                 return response()->json([
                     'status' => false,

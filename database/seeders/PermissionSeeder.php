@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class UserSeeder extends Seeder
+class PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -54,47 +54,40 @@ class UserSeeder extends Seeder
             $factor_index,
             $factor_store,
         ]);
-
-        $admin = User::create([
-            'user_name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin'
-        ]);
-
-        $admin->assignRole($admin_role);
 //------------------------------------------------//
-        $cus_order_index = Permission::create(['name' => 'cus_order_index']);
-        $cus_order_show = Permission::create(['name' => 'cus_order_show']);
-        $cus_order_store = Permission::create(['name' => 'cus_order_store']);
-        $cus_factor_index = Permission::create(['name' => 'cus_factor_index']);
-        $cus_factor_store = Permission::create(['name' => 'cus_factor_store']);
-        $cus_factor_destroy = Permission::create(['name' => 'cus_factor_destroy']);
-        $cus_factor_status = Permission::create(['name' => 'cus_factor_status']);
-        $customer = User::create([
-            'user_name' => 'Customer',
-            'email' => 'customer@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'customer'
-        ]);
+        $customer_order_index = Permission::create(['name' => 'customer_order_index']);
+        $customer_order_show = Permission::create(['name' => 'customer_order_show']);
+        $customer_order_store = Permission::create(['name' => 'customer_order_store']);
+        $customer_factor_index = Permission::create(['name' => 'customer_factor_index']);
+        $customer_factor_store = Permission::create(['name' => 'customer_factor_store']);
+        $customer_factor_destroy = Permission::create(['name' => 'customer_factor_destroy']);
+        $customer_factor_status = Permission::create(['name' => 'customer_factor_status']);
 
         $customer_role = Role::create(['name' => 'customer']);
-        $customer->assignRole($customer_role);
-        $customer->givePermissionTo([
-            $cus_order_index,
-            $cus_order_show,
-            $cus_order_store,
-            $cus_factor_index,
-            $cus_factor_store,
-            $cus_factor_destroy,
-            $cus_factor_status
+        $customer_role->givePermissionTo([
+            $customer_order_index,
+            $customer_order_show,
+            $customer_order_store,
+            $customer_factor_index,
+            $customer_factor_store,
+            $customer_factor_destroy,
+            $customer_factor_status
         ]);
 //---------------------------------------------//
-        $seller = User::create([
-            'user_name' => 'Seller',
-            'email' => 'seller@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'seller'
+        $seller_product_index = Permission::create(['name' => 'seller_product_index']);
+        $seller_product_store = Permission::create(['name' => 'seller_product_store']);
+        $seller_product_update = Permission::create(['name' => 'seller_product_update']);
+        $seller_product_destroy = Permission::create(['name' => 'seller_product_destroy']);
+        $seller_factor_index = Permission::create(['name' => 'seller_factor_index']);
+
+        $seller_role = Role::create(['name' => 'seller']);
+        $seller_role->givePermissionTo([
+            $seller_product_index,
+            $seller_product_store,
+            $seller_product_update,
+            $seller_product_destroy,
+            $seller_factor_index
         ]);
+
     }
 }
