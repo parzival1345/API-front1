@@ -11,7 +11,8 @@ class SellerProductController extends Controller
 {
     public function index()
     {
-        $id = auth('api')->user()->id;
+        $id = auth()->user()->id;
+
         $products = Product::where('user_id', $id)->get();
         if (!$products->count()) {
             return response()->json([

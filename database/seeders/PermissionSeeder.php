@@ -88,6 +88,5 @@ class PermissionSeeder extends Seeder
             $seller_product_destroy,
             $seller_factor_index
         ]);
-
     }
 }

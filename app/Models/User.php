@@ -18,6 +18,8 @@ class User extends Authenticatable
     use SoftDeletes;
     protected $date = ['deleted_at'];
 
+//    protected $guard_name = 'api';
+
     protected $filterFields = [
         'email',
         'user_name',

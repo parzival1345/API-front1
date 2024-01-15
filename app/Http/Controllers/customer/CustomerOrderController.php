@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Order_product;
 use App\Models\Product;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +17,6 @@ class CustomerOrderController extends Controller
     {
         $id = auth()->user()->id;
         $orders = Order::where('user_id', $id)->with('products')->get();
-        dd($orders);
         return response()->json([
             'orders' => $orders,
         ]);
