@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -25,5 +27,21 @@ class LoginController extends Controller
             ]);
 
         }
+    }
+    public function redirectToProvider() {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGithubCallback(Request $request) {
+        $googleUser = Socialite::driver('google')->user();
+
+        return response()->json([
+            'token' => $googleUser->token,
+            'user' => $googleUser->user
+        ]);
+    }
+    public function index(): view
+    {
+        return view('google_login');
     }
 }

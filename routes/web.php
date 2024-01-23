@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/', function () {
 //    return '123123';
 //});
+
+
+Route::get('/dashbord' , [LoginController::class , 'index']);
+Route::get('/auth/login/google' , [LoginController::class , 'redirectToProvider'])->name('login');
+Route::get('/auth/google_login/callback' , [LoginController::class , 'handleGithubCallback']);

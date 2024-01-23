@@ -24,4 +24,11 @@ class AdminFactorController extends Controller
         ]);
         return response()->json(['factors' => $factors]);
     }
+    public function destroy($id) {
+        Factor::find($id)->delete();
+        return response()->json([
+            'status' => true,
+            'message' => 'your factor has been deleted'
+        ]);
+    }
 }

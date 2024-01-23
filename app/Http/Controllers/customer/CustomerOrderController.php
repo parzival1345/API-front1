@@ -60,6 +60,9 @@ class CustomerOrderController extends Controller
         ]);
         foreach ($request->products as $product) {
             $orders->products()->attach($product['product_id'], ['count' => $product['count']]);
+            $product_inv = Product::find($product['product_id']);
+            $new_inventory = $product_inv->inventory - $product['count'];
+            $product_inv->update(['inventory' => $new_inventory]);
         }
         return response()->json([$orders]);
     }
@@ -70,6 +73,10 @@ class CustomerOrderController extends Controller
         foreach ($request->products as $product) {
             $price = Product::find($product['product_id'])->price;
             $total_price += $price * $product['count'];
+            $product_inv = Product::find($product['product_id']);
+            $new_inventory = $product_inv->inventory - $product['count'];
+            $product_inv->update(['inventory' => $new_inventory]);
+
             $order->products()->syncWithoutDetaching([$product['product_id'] => ['count' => $product['count']]]);
         }
 

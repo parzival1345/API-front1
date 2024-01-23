@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class PermissionSeeder extends Seeder
+class  PermissionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -33,6 +33,13 @@ class PermissionSeeder extends Seeder
         $order_destroy = Permission::create(['name' => 'order_destroy']);
         $factor_index = Permission::create(['name' => 'factor_index']);
         $factor_store = Permission::create(['name' => 'factor_store']);
+        $factor_delete = Permission::create(['name' => 'factor_delete']);
+        $user_seller_accept = Permission::create(['name' => 'user_seller_accept']);
+        $user_seller_reject = Permission::create(['name' => 'user_seller_reject']);
+        $index_roles = Permission::create(['name' => 'index_roles']);
+        $create_roles = Permission::create(['name' => 'create_roles']);
+        $update_roles = Permission::create(['name' => 'update_roles']);
+
 
         $admin_role = Role::create(['name' => 'admin']);
         $admin_role->givePermissionTo([
@@ -53,6 +60,18 @@ class PermissionSeeder extends Seeder
             $order_destroy,
             $factor_index,
             $factor_store,
+            $factor_delete,
+            $user_seller_accept,
+            $user_seller_reject,
+            $index_roles,
+            $create_roles,
+            $update_roles
+        ]);
+        User::create([
+            'user_name' => 'moti',
+            'email' => 'mmoein.motamed@gmail.com',
+            'password' => Hash::make(123),
+            'role' => 'admin'
         ]);
 //------------------------------------------------//
         $customer_order_index = Permission::create(['name' => 'customer_order_index']);
@@ -62,6 +81,8 @@ class PermissionSeeder extends Seeder
         $customer_factor_store = Permission::create(['name' => 'customer_factor_store']);
         $customer_factor_destroy = Permission::create(['name' => 'customer_factor_destroy']);
         $customer_factor_status = Permission::create(['name' => 'customer_factor_status']);
+        $customer_orders_update = Permission::create(['name' => 'customer_orders_update']);
+        $customer_orders_create = Permission::create(['name' => 'customer_orders_create']);
 
         $customer_role = Role::create(['name' => 'customer']);
         $customer_role->givePermissionTo([
@@ -71,7 +92,15 @@ class PermissionSeeder extends Seeder
             $customer_factor_index,
             $customer_factor_store,
             $customer_factor_destroy,
-            $customer_factor_status
+            $customer_factor_status,
+            $customer_orders_update,
+            $customer_orders_create
+        ]);
+        User::create([
+            'user_name' => 'customer',
+            'email' => 'customer@gmail.com',
+            'password' => Hash::make(123),
+            'role' => 'customer'
         ]);
 //---------------------------------------------//
         $seller_product_index = Permission::create(['name' => 'seller_product_index']);
@@ -87,6 +116,12 @@ class PermissionSeeder extends Seeder
             $seller_product_update,
             $seller_product_destroy,
             $seller_factor_index
+        ]);
+        User::create([
+            'user_name' => 'seller',
+            'email' => 'seller@gmail.com',
+            'password' => Hash::make(123),
+            'role' => 'seller'
         ]);
     }
 }
