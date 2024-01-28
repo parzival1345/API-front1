@@ -2,24 +2,25 @@
 
 namespace App\Mail;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class MyMail extends Mailable
+class OrderConfirmationToCustomer extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $order;
+    public function __construct(Order $orders)
     {
-        //
+        $this->order = $orders;
     }
 
     /**
@@ -27,23 +28,19 @@ class MyMail extends Mailable
      */
     public function envelope(): Envelope
     {
-         return new Envelope(
-            from: new Address('mmoein.motamed@gmail.com' , 'moein'),
-            replyTo: [
-                new Address('moeinmotamed36@gmail.com' , 'moti'),
-            ],
-            subject: 'order',
+        return new Envelope(
+            subject: 'Order Confirmation To Customer',
         );
     }
 
     /**
      * Get the message content definition.
      */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'welcome',
-        );
+    public function build() {
+        return $this->view('email_order_confirmation_to_user')
+            ->with([
+                'orderDetails' => $this->order,
+            ]);
     }
 
     /**
@@ -55,4 +52,5 @@ class MyMail extends Mailable
     {
         return [];
     }
+
 }

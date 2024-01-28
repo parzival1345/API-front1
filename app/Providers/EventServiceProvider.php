@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\OrderCreated;
 use App\Events\PodcastProcessed;
+use App\Listeners\SendOrderConfirmationToCustomer;
+use App\Listeners\SendOrderNotificationToSeller;
 use App\Listeners\SendPodcastNotification;
+use App\Models\Order;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,6 +24,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        OrderCreated::class => [
+            SendOrderConfirmationToCustomer::class,
+            SendOrderNotificationToSeller::class,
+        ],
     ];
 
     /**
@@ -27,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        parent::boot();
     }
 
     /**

@@ -2,9 +2,8 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\Admin;
-use App\Http\Middleware\Customer;
-use App\Http\Middleware\Seller;
+use App\Http\Middleware\CheckSellerApproval;
+use App\Http\Middleware\CheckUserRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -48,6 +47,8 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+//            CheckUserRole::class,
+//            CheckSellerApproval::class,
         ],
     ];
 
@@ -73,8 +74,7 @@ class Kernel extends HttpKernel
         'role' => RoleMiddleware::class,
         'permission' => PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
-        'Admin' => Admin::class,
-        'Customer' => Customer::class,
-        'Seller' => Seller::class,
+//        'CheckUserRole' => CheckUserRole::class,
+//        'CheckSellerApproval' => CheckSellerApproval::class,
     ];
 }

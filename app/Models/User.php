@@ -16,9 +16,8 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements HasMedia
 {
     use InteractsWithMedia;
-    use HasApiTokens, HasFactory, Notifiable,HasRoles;
-    use Filterable;
-    use SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable,HasRoles,Filterable,SoftDeletes;
+
     protected $date = ['deleted_at'];
 
 //    protected $guard_name = 'api';

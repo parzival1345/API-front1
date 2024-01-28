@@ -31,8 +31,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 //****//
 //Authorize//
-Route::post('/auth/register', [RegisterController::class, 'register']);
-Route::post('/auth/login', [LoginController::class, 'login']);
+Route::/*middleware(['check.user.role','check.seller.approval'])->*/post('/auth/register', [RegisterController::class, 'register']);
+Route::/*middleware('check.seller.approval')->*/post('/auth/login', [LoginController::class, 'login']);
 Route::any('/auth/logout/{id}', [LogoutController::class, 'logout']);
 Route::middleware('auth:sanctum')->group(function () {
     /**

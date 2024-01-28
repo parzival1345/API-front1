@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\customer;
 
+use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
+use App\Mail\MyMail;
+use App\Mail\OrderConfirmationToCustomer;
 use App\Models\Order;
 use App\Models\Order_product;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mime\Address;
 
 class CustomerOrderController extends Controller
 {
@@ -44,10 +50,8 @@ class CustomerOrderController extends Controller
             $responseData
         ]);
     }
-
     public function store(Request $request)
     {
-
         $total_price = 0;
         foreach ($request->products as $product) {
             $price = Product::find($product['product_id'])->price;
@@ -64,6 +68,8 @@ class CustomerOrderController extends Controller
             $new_inventory = $product_inv->inventory - $product['count'];
             $product_inv->update(['inventory' => $new_inventory]);
         }
+//        Mail::to('moeinmotamed36@gmail.com')->send(new OrderConfirmationToCustomer($orders));
+        event(new OrderCreated($orders));
         return response()->json([$orders]);
     }
     public function update(Request $request,$id) {

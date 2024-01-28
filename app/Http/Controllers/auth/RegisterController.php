@@ -17,6 +17,7 @@ class RegisterController extends Controller
                 'user_name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'role' => $request->role,
                 'status' => 'در انتظار تایید',
             ]);
             $user->syncRoles([$request->role]);
